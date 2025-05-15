@@ -1,5 +1,4 @@
 # Temario Detallado de Programación en Profundidad
-# Temario Detallado de Programación en Profundidad
 
 ## Índice
 
