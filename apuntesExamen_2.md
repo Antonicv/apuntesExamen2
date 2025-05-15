@@ -1,4 +1,60 @@
 # Temario Detallado de Programación en Profundidad
+# Temario Detallado de Programación en Profundidad
+
+## Índice
+
+- [Introducción: Panorama del Currículo Integral de Programación](#introducción-panorama-del-currículo-integral-de-programación)
+
+- [TEMA 1 – JPA (Java Persistence API)](#tema-1--jpa-java-persistence-api)
+    - [Conceptos Core de JPA](#conceptos-core-de-jpa)
+    - [Relaciones: @OneToMany, @ManyToOne](#relaciones-onetomany-manytoone)
+    - [Unidireccional vs Bidireccional](#unidireccional-vs-bidireccional)
+    - [Repositorios (@Repository)](#repositorios-repository)
+    - [Anotaciones de configuración: @Entity, @Id, @JoinColumn, etc.](#anotaciones-de-configuración-entity-id-joincolumn-etc)
+    - [Comprensión del gráfico: diagrama de relaciones](#comprensión-del-gráfico-diagrama-de-relaciones)
+    - [EAGER vs LAZY loading](#eager-vs-lazy-loading)
+    - [Práctica: Modelo con relaciones y anotaciones](#práctica-modelo-con-relaciones-y-anotaciones)
+
+- [TEMA 2 – React – Hooks y Context](#tema-2--react--hooks-y-context)
+    - [Hooks](#hooks)
+        - [useState](#usestate)
+        - [useEffect](#useeffect)
+        - [useContext](#usecontext)
+    - [Context API](#context-api)
+        - [Ventajas de usar Context](#ventajas-de-usar-context)
+
+- [TEMA 3 – React – Navegación y Axios](#tema-3--react--navegación-y-axios)
+    - [React Router](#react-router)
+        - [Configuración básica](#configuración-básica)
+        - [useNavigate](#usenavigate)
+        - [Nested routes](#nested-routes)
+    - [Axios](#axios)
+        - [Peticiones GET y POST](#peticiones-get-y-post)
+        - [Manejo de errores](#manejo-de-errores)
+    - [Práctica: App React con rutas y llamadas a API falsas](#práctica-app-react-con-rutas-y-llamadas-a-api-falsas)
+
+- [TEMA 4 – Full Stack + AWS + DynamoDB](#tema-4--full-stack--aws--dynamodb)
+    - [Full Stack](#full-stack)
+        - [Ventajas](#ventajas)
+        - [Desventajas](#desventajas)
+        - [Tecnologías implicadas](#tecnologías-implicadas)
+    - [AWS y DynamoDB](#aws-y-dynamodb)
+        - [¿Qué es DynamoDB?](#qué-es-dynamodb)
+        - [Diferencias entre bases SQL y NoSQL](#diferencias-entre-bases-sql-y-nosql)
+        - [Operaciones básicas en DynamoDB](#operaciones-básicas-en-dynamodb)
+
+- [TEMA 5 – JUnit + Queries + Repaso general](#tema-5--junit--queries--repaso-general)
+    - [JUnit](#junit)
+        - [Cómo crear un test](#cómo-crear-un-test)
+        - [Anotaciones importantes](#anotaciones-importantes)
+    - [Queries en JPA](#queries-en-jpa)
+        - [JPQL vs Native Queries](#jpql-vs-native-queries)
+        - [Ejemplos de consultas JPQL](#ejemplos-de-consultas-jpql)
+    - [Práctica: Escribir tests simples en Java y consultas JPQL](#práctica-escribir-tests-simples-en-java-y-consultas-jpql)
+        - [Clase de ejemplo para pruebas JUnit](#clase-de-ejemplo-para-pruebas-junit)
+        - [Modelo JPA para consultas JPQL](#modelo-jpa-para-consultas-jpql)
+
+
 
 ## **Introducción: Panorama del Currículo Integral de Programación**
 
@@ -8,7 +64,7 @@ El enfoque pedagógico se centra en ofrecer **explicaciones detalladas**, **ejem
 
 ---
 
-## **Día 1 – JPA (Java Persistence API)**
+## **TEMA 1 – JPA (Java Persistence API)**
 
 ### **Conceptos Core de JPA**
 
@@ -16,29 +72,29 @@ El enfoque pedagógico se centra en ofrecer **explicaciones detalladas**, **ejem
 
 - **Entidad**: Una clase de Java simple que representa una **tabla** en una base de datos relacional. Cada instancia de una entidad corresponde a una **fila** en esa tabla, y los atributos de la clase se mapean a las **columnas** de la tabla. Para indicar que una clase Java es una entidad JPA, se utiliza la anotación `@Entity`.
 
-    ```java
-    // Ejemplo de una entidad JPA que representa una tabla "Producto" en la base de datos.
-    @Entity
-    public class Producto {
-            @Id // Indica la clave primaria de la entidad.
-            private Long id;
-            private String nombre;
-            private double precio;
-            //... getters y setters
-    }
-    ```
+        ```java
+        // Ejemplo de una entidad JPA que representa una tabla "Producto" en la base de datos.
+        @Entity
+        public class Producto {
+                        @Id // Indica la clave primaria de la entidad.
+                        private Long id;
+                        private String nombre;
+                        private double precio;
+                        //... getters y setters
+        }
+        ```
 
-    Aquí, la clase **Producto** está marcada como una entidad, lo que significa que JPA la gestionará y la sincronizará con una tabla llamada (por defecto) **Producto** en la base de datos.
+        Aquí, la clase **Producto** está marcada como una entidad, lo que significa que JPA la gestionará y la sincronizará con una tabla llamada (por defecto) **Producto** en la base de datos.
 
 - **Unidad de Persistencia**: Es una configuración que define cómo se gestionan las entidades. Se especifica típicamente en un archivo llamado **persistence.xml**. Este archivo contiene información crucial como la conexión a la base de datos, el proveedor de persistencia (por ejemplo, **Hibernate**, **EclipseLink**), y las entidades que deben ser gestionadas.
 
 - **EntityManager**: Es una interfaz que se utiliza para interactuar con el contexto de persistencia. Permite realizar operaciones como **guardar** (persistir), **recuperar** (buscar), **actualizar** y **eliminar** instancias de entidades en la base de datos.
 
-    ```java
-    // Ejemplo de cómo crear un EntityManager para gestionar entidades en JPA.
-    EntityManagerFactory emf = Persistence.createEntityManagerFactory("miUnidadDePersistencia");
-    EntityManager em = emf.createEntityManager();
-    ```
+        ```java
+        // Ejemplo de cómo crear un EntityManager para gestionar entidades en JPA.
+        EntityManagerFactory emf = Persistence.createEntityManagerFactory("miUnidadDePersistencia");
+        EntityManager em = emf.createEntityManager();
+        ```
 
 > **Importante:** Comprender estos conceptos básicos es esencial, ya que forman la base sobre la cual se construyen todas las operaciones de JPA.
 
@@ -54,34 +110,34 @@ Las **relaciones entre entidades** son un aspecto fundamental del modelado de da
 
 - **@OneToMany**: Una entidad puede tener **múltiples instancias** de otra entidad. Ejemplo: un **Autor** puede escribir muchos **Libros**.
 
-    ```java
-    // Ejemplo de relación uno a muchos: un autor tiene muchos libros.
-    @Entity
-    public class Autor {
-            @Id
-            private Long id;
-            private String nombre;
-            @OneToMany(mappedBy = "autor") // Relación uno a muchos con la entidad Libro.
-            private List<Libro> libros;
-            //... getters y setters
-    }
-    ```
+        ```java
+        // Ejemplo de relación uno a muchos: un autor tiene muchos libros.
+        @Entity
+        public class Autor {
+                        @Id
+                        private Long id;
+                        private String nombre;
+                        @OneToMany(mappedBy = "autor") // Relación uno a muchos con la entidad Libro.
+                        private List<Libro> libros;
+                        //... getters y setters
+        }
+        ```
 
 - **@ManyToOne**: Múltiples instancias de una entidad pueden pertenecer a una única instancia de otra entidad.
 
-    ```java
-    // Ejemplo de relación muchos a uno: muchos libros pertenecen a un autor.
-    @Entity
-    public class Libro {
-            @Id
-            private Long id;
-            private String titulo;
-            @ManyToOne // Relación muchos a uno con la entidad Autor.
-            @JoinColumn(name = "autor_id") // Especifica la columna de clave foránea.
-            private Autor autor;
-            //... getters y setters
-    }
-    ```
+        ```java
+        // Ejemplo de relación muchos a uno: muchos libros pertenecen a un autor.
+        @Entity
+        public class Libro {
+                        @Id
+                        private Long id;
+                        private String titulo;
+                        @ManyToOne // Relación muchos a uno con la entidad Autor.
+                        @JoinColumn(name = "autor_id") // Especifica la columna de clave foránea.
+                        private Autor autor;
+                        //... getters y setters
+        }
+        ```
 
 > **Nota:** La anotación `@JoinColumn(name = "autor_id")` especifica la columna de clave foránea en la tabla **Libro**.
 
@@ -95,33 +151,33 @@ Las **relaciones entre entidades** son un aspecto fundamental del modelado de da
 
 - **Unidireccional**: Solo una de las entidades conoce a la otra.
 
-    ```java
-    // Ejemplo de relación unidireccional: Pedido conoce a Cliente, pero Cliente no conoce a Pedido.
-    @Entity
-    public class Pedido {
-            @Id
-            private Long id;
-            @ManyToOne
-            @JoinColumn(name = "cliente_id")
-            private Cliente cliente;
-            //...
-    }
-    ```
+        ```java
+        // Ejemplo de relación unidireccional: Pedido conoce a Cliente, pero Cliente no conoce a Pedido.
+        @Entity
+        public class Pedido {
+                        @Id
+                        private Long id;
+                        @ManyToOne
+                        @JoinColumn(name = "cliente_id")
+                        private Cliente cliente;
+                        //...
+        }
+        ```
 
 - **Bidireccional**: Ambas entidades son conscientes la una de la otra.
 
-    ```java
-    // Ejemplo de relación bidireccional: Autor conoce a sus Libros y Libro conoce a su Autor.
-    @Entity
-    public class Autor {
-            @Id
-            private Long id;
-            private String nombre;
-            @OneToMany(mappedBy = "autor")
-            private List<Libro> libros;
-            //...
-    }
-    ```
+        ```java
+        // Ejemplo de relación bidireccional: Autor conoce a sus Libros y Libro conoce a su Autor.
+        @Entity
+        public class Autor {
+                        @Id
+                        private Long id;
+                        private String nombre;
+                        @OneToMany(mappedBy = "autor")
+                        private List<Libro> libros;
+                        //...
+        }
+        ```
 
 #### **Analogía para principiantes**
 
@@ -140,7 +196,7 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface ProductoRepository extends JpaRepository<Producto, Long> {
-        // Métodos personalizados aquí si es necesario
+                // Métodos personalizados aquí si es necesario
 }
 ```
 
@@ -196,48 +252,48 @@ Ejemplo de un modelo de blog:
 // Entidad Usuario: representa un usuario que puede tener muchas publicaciones.
 @Entity
 public class Usuario {
-        @Id
-        @GeneratedValue(strategy = GenerationType.IDENTITY)
-        private Long id;
-        private String nombre;
-        @OneToMany(mappedBy = "autor") // Un usuario puede tener muchas publicaciones.
-        private List<Publicacion> publicaciones;
-        //... getters y setters
+                @Id
+                @GeneratedValue(strategy = GenerationType.IDENTITY)
+                private Long id;
+                private String nombre;
+                @OneToMany(mappedBy = "autor") // Un usuario puede tener muchas publicaciones.
+                private List<Publicacion> publicaciones;
+                //... getters y setters
 }
 
 // Entidad Publicacion: representa una publicación que pertenece a un usuario y puede tener muchos comentarios.
 @Entity
 public class Publicacion {
-        @Id
-        @GeneratedValue(strategy = GenerationType.IDENTITY)
-        private Long id;
-        private String titulo;
-        private String contenido;
-        @ManyToOne // Muchas publicaciones pueden pertenecer a un usuario.
-        @JoinColumn(name = "autor_id")
-        private Usuario autor;
-        @OneToMany(mappedBy = "publicacion") // Una publicación puede tener muchos comentarios.
-        private List<Comentario> comentarios;
-        //... getters y setters
+                @Id
+                @GeneratedValue(strategy = GenerationType.IDENTITY)
+                private Long id;
+                private String titulo;
+                private String contenido;
+                @ManyToOne // Muchas publicaciones pueden pertenecer a un usuario.
+                @JoinColumn(name = "autor_id")
+                private Usuario autor;
+                @OneToMany(mappedBy = "publicacion") // Una publicación puede tener muchos comentarios.
+                private List<Comentario> comentarios;
+                //... getters y setters
 }
 
 // Entidad Comentario: representa un comentario que pertenece a una publicación.
 @Entity
 public class Comentario {
-        @Id
-        @GeneratedValue(strategy = GenerationType.IDENTITY)
-        private Long id;
-        private String texto;
-        @ManyToOne // Muchos comentarios pueden pertenecer a una publicación.
-        @JoinColumn(name = "publicacion_id")
-        private Publicacion publicacion;
-        //... getters y setters
+                @Id
+                @GeneratedValue(strategy = GenerationType.IDENTITY)
+                private Long id;
+                private String texto;
+                @ManyToOne // Muchos comentarios pueden pertenecer a una publicación.
+                @JoinColumn(name = "publicacion_id")
+                private Publicacion publicacion;
+                //... getters y setters
 }
 ```
 
 ---
 
-## **Día 2 – React – Hooks y Context**
+## **TEMA 2 – React – Hooks y Context**
 
 ### **Hooks**
 
@@ -252,18 +308,18 @@ Permite declarar **variables de estado** y funciones para actualizarlas.
 import React, { useState } from 'react';
 
 function Contador() {
-    const [contador, setContador] = useState(0); // contador es el valor, setContador la función para actualizarlo.
+        const [contador, setContador] = useState(0); // contador es el valor, setContador la función para actualizarlo.
 
-    const incrementar = () => {
-        setContador(contador + 1); // Incrementa el contador en 1.
-    };
+        const incrementar = () => {
+                setContador(contador + 1); // Incrementa el contador en 1.
+        };
 
-    return (
-        <div>
-            <p>Contador: {contador}</p>
-            <button onClick={incrementar}>Incrementar</button>
-        </div>
-    );
+        return (
+                <div>
+                        <p>Contador: {contador}</p>
+                        <button onClick={incrementar}>Incrementar</button>
+                </div>
+        );
 }
 ```
 
@@ -276,28 +332,28 @@ Se utiliza para manejar **efectos secundarios** en componentes funcionales.
 import React, { useState, useEffect } from 'react';
 
 function DatosDesdeApi() {
-    const [datos, setDatos] = useState(null);
-    const [cargando, setCargando] = useState(true);
-    const [error, setError] = useState(null);
+        const [datos, setDatos] = useState(null);
+        const [cargando, setCargando] = useState(true);
+        const [error, setError] = useState(null);
 
-    useEffect(() => {
-        // Simula una petición a una API con setTimeout.
-        setTimeout(() => {
-            const datosSimulados = { mensaje: "Datos obtenidos exitosamente" };
-            setDatos(datosSimulados);
-            setCargando(false);
-        }, 2000);
+        useEffect(() => {
+                // Simula una petición a una API con setTimeout.
+                setTimeout(() => {
+                        const datosSimulados = { mensaje: "Datos obtenidos exitosamente" };
+                        setDatos(datosSimulados);
+                        setCargando(false);
+                }, 2000);
 
-        return () => {
-            // Limpieza opcional al desmontar el componente.
-        };
-    }, []); // El array vacío indica que solo se ejecuta una vez al montar.
+                return () => {
+                        // Limpieza opcional al desmontar el componente.
+                };
+        }, []); // El array vacío indica que solo se ejecuta una vez al montar.
 
-    if (cargando) return <p>Cargando datos...</p>;
-    if (error) return <p>Error al cargar los datos.</p>;
-    if (datos) return <p>{datos.mensaje}</p>;
+        if (cargando) return <p>Cargando datos...</p>;
+        if (error) return <p>Error al cargar los datos.</p>;
+        if (datos) return <p>{datos.mensaje}</p>;
 
-    return null;
+        return null;
 }
 ```
 
@@ -312,28 +368,28 @@ import React, { useState, createContext, useContext } from 'react';
 const TemaContext = createContext('claro'); // Crea un contexto con valor por defecto 'claro'.
 
 function ProveedorDeTema({ children }) {
-    const [tema, setTema] = useState('claro');
+        const [tema, setTema] = useState('claro');
 
-    const cambiarTema = () => {
-        setTema(tema === 'claro' ? 'oscuro' : 'claro'); // Cambia entre claro y oscuro.
-    };
+        const cambiarTema = () => {
+                setTema(tema === 'claro' ? 'oscuro' : 'claro'); // Cambia entre claro y oscuro.
+        };
 
-    return (
-        <TemaContext.Provider value={{ tema, cambiarTema }}>
-            {children}
-        </TemaContext.Provider>
-    );
+        return (
+                <TemaContext.Provider value={{ tema, cambiarTema }}>
+                        {children}
+                </TemaContext.Provider>
+        );
 }
 
 function ComponenteConsumidor() {
-    const { tema, cambiarTema } = useContext(TemaContext); // Accede al contexto.
+        const { tema, cambiarTema } = useContext(TemaContext); // Accede al contexto.
 
-    return (
-        <div style={{ backgroundColor: tema === 'oscuro' ? 'black' : 'white', color: tema === 'oscuro' ? 'white' : 'black' }}>
-            <p>El tema actual es: {tema}</p>
-            <button onClick={cambiarTema}>Cambiar tema</button>
-        </div>
-    );
+        return (
+                <div style={{ backgroundColor: tema === 'oscuro' ? 'black' : 'white', color: tema === 'oscuro' ? 'white' : 'black' }}>
+                        <p>El tema actual es: {tema}</p>
+                        <button onClick={cambiarTema}>Cambiar tema</button>
+                </div>
+        );
 }
 ```
 
@@ -351,7 +407,7 @@ Permite **compartir valores** entre todos los componentes en un árbol, sin tene
 
 ---
 
-## **Día 3 – React – Navegación y Axios**
+## **TEMA 3 – React – Navegación y Axios**
 
 ### **React Router**
 
@@ -369,22 +425,22 @@ function AcercaDe() { return <h2>Acerca de</h2>; }
 function Contacto() { return <h2>Contacto</h2>; }
 
 function App() {
-    return (
-        <BrowserRouter>
-            <nav>
-                <ul>
-                    <li><Link to="/">Inicio</Link></li>
-                    <li><Link to="/acerca">Acerca de</Link></li>
-                    <li><Link to="/contacto">Contacto</Link></li>
-                </ul>
-            </nav>
-            <Routes>
-                <Route path="/" element={<Inicio />} />
-                <Route path="/acerca" element={<AcercaDe />} />
-                <Route path="/contacto" element={<Contacto />} />
-            </Routes>
-        </BrowserRouter>
-    );
+        return (
+                <BrowserRouter>
+                        <nav>
+                                <ul>
+                                        <li><Link to="/">Inicio</Link></li>
+                                        <li><Link to="/acerca">Acerca de</Link></li>
+                                        <li><Link to="/contacto">Contacto</Link></li>
+                                </ul>
+                        </nav>
+                        <Routes>
+                                <Route path="/" element={<Inicio />} />
+                                <Route path="/acerca" element={<AcercaDe />} />
+                                <Route path="/contacto" element={<Contacto />} />
+                        </Routes>
+                </BrowserRouter>
+        );
 }
 ```
 
@@ -398,18 +454,18 @@ import React from 'react';
 import { useNavigate } from 'react-router-dom';
 
 function PaginaDeInicio() {
-    const navigate = useNavigate();
+        const navigate = useNavigate();
 
-    const irAPaginaAcercaDe = () => {
-        navigate('/acerca'); // Navega a la ruta "/acerca".
-    };
+        const irAPaginaAcercaDe = () => {
+                navigate('/acerca'); // Navega a la ruta "/acerca".
+        };
 
-    return (
-        <div>
-            <h2>Página de Inicio</h2>
-            <button onClick={irAPaginaAcercaDe}>Ir a la página "Acerca de"</button>
-        </div>
-    );
+        return (
+                <div>
+                        <h2>Página de Inicio</h2>
+                        <button onClick={irAPaginaAcercaDe}>Ir a la página "Acerca de"</button>
+                </div>
+        );
 }
 ```
 
@@ -423,18 +479,18 @@ import React from 'react';
 import { BrowserRouter, Routes, Route, Link, Outlet } from 'react-router-dom';
 
 function PanelDeControl() {
-    return (
-        <div>
-            <h2>Panel de Control</h2>
-            <nav>
-                <ul>
-                    <li><Link to="/admin/usuarios">Usuarios</Link></li>
-                    <li><Link to="/admin/productos">Productos</Link></li>
-                </ul>
-            </nav>
-            <Outlet /> {/* Renderiza las sub-rutas aquí */}
-        </div>
-    );
+        return (
+                <div>
+                        <h2>Panel de Control</h2>
+                        <nav>
+                                <ul>
+                                        <li><Link to="/admin/usuarios">Usuarios</Link></li>
+                                        <li><Link to="/admin/productos">Productos</Link></li>
+                                </ul>
+                        </nav>
+                        <Outlet /> {/* Renderiza las sub-rutas aquí */}
+                </div>
+        );
 }
 ```
 
@@ -457,8 +513,8 @@ axios.get('https://api.ejemplo.com/usuarios')
 
 // POST: crea un nuevo usuario enviando datos a la API.
 axios.post('https://api.ejemplo.com/usuarios', {
-    nombre: 'Juan Pérez',
-    email: 'juan.perez@ejemplo.com'
+        nombre: 'Juan Pérez',
+        email: 'juan.perez@ejemplo.com'
 })
  .then(respuesta => { console.log('Usuario creado:', respuesta.data); })
  .catch(error => { console.error('Error:', error); });
@@ -471,17 +527,17 @@ axios.post('https://api.ejemplo.com/usuarios', {
 axios.get('https://api.ejemplo.com/recurso-inexistente')
  .then(respuesta => { console.log(respuesta.data); })
  .catch(error => {
-        if (error.response) {
-            // El servidor respondió con un código de error.
-            console.error('Error del servidor:', error.response.status, error.response.data);
-        } else if (error.request) {
-            // No se recibió respuesta del servidor.
-            console.error('No se recibió respuesta del servidor:', error.request);
-        } else {
-            // Error al configurar la petición.
-            console.error('Error al configurar la petición:', error.message);
-        }
-    });
+                if (error.response) {
+                        // El servidor respondió con un código de error.
+                        console.error('Error del servidor:', error.response.status, error.response.data);
+                } else if (error.request) {
+                        // No se recibió respuesta del servidor.
+                        console.error('No se recibió respuesta del servidor:', error.request);
+                } else {
+                        // Error al configurar la petición.
+                        console.error('Error al configurar la petición:', error.message);
+                }
+        });
 ```
 
 ---
@@ -495,42 +551,42 @@ import { BrowserRouter, Routes, Route, Link } from 'react-router-dom';
 import axios from 'axios';
 
 function ListaDeUsuarios() {
-    const [usuarios, setUsuarios] = useState([]);
-    const [cargando, setCargando] = useState(true);
-    const [error, setError] = useState(null);
+        const [usuarios, setUsuarios] = useState([]);
+        const [cargando, setCargando] = useState(true);
+        const [error, setError] = useState(null);
 
-    useEffect(() => {
-        // Realiza una petición GET a una API falsa para obtener usuarios.
-        axios.get('https://jsonplaceholder.typicode.com/users')
-         .then(respuesta => {
-                setUsuarios(respuesta.data);
-                setCargando(false);
-            })
-         .catch(error => {
-                setError(error);
-                setCargando(false);
-            });
-    }, []);
+        useEffect(() => {
+                // Realiza una petición GET a una API falsa para obtener usuarios.
+                axios.get('https://jsonplaceholder.typicode.com/users')
+                 .then(respuesta => {
+                                setUsuarios(respuesta.data);
+                                setCargando(false);
+                        })
+                 .catch(error => {
+                                setError(error);
+                                setCargando(false);
+                        });
+        }, []);
 
-    if (cargando) return <p>Cargando usuarios...</p>;
-    if (error) return <p>Error al cargar los usuarios.</p>;
+        if (cargando) return <p>Cargando usuarios...</p>;
+        if (error) return <p>Error al cargar los usuarios.</p>;
 
-    return (
-        <div>
-            <h2>Lista de Usuarios</h2>
-            <ul>
-                {usuarios.map(usuario => (
-                    <li key={usuario.id}>{usuario.name} ({usuario.email})</li>
-                ))}
-            </ul>
-        </div>
-    );
+        return (
+                <div>
+                        <h2>Lista de Usuarios</h2>
+                        <ul>
+                                {usuarios.map(usuario => (
+                                        <li key={usuario.id}>{usuario.name} ({usuario.email})</li>
+                                ))}
+                        </ul>
+                </div>
+        );
 }
 ```
 
 ---
 
-## **Día 4 – Full Stack + AWS + DynamoDB**
+## **TEMA 4 – Full Stack + AWS + DynamoDB**
 
 ### **Full Stack**
 
@@ -584,35 +640,35 @@ Un **desarrollador full stack** es capaz de trabajar en **frontend**, **backend*
 
 - **PutItem (Inserción):**
 
-    ```bash
-    # Inserta un nuevo ítem en la tabla "MiTabla" con id, nombre y precio.
-    aws dynamodb put-item --table-name MiTabla --item '{"id": {"N": "1"}, "nombre": {"S": "Producto A"}, "precio": {"N": "25.00"}}'
-    ```
+        ```bash
+        # Inserta un nuevo ítem en la tabla "MiTabla" con id, nombre y precio.
+        aws dynamodb put-item --table-name MiTabla --item '{"id": {"N": "1"}, "nombre": {"S": "Producto A"}, "precio": {"N": "25.00"}}'
+        ```
 
 - **GetItem (Consulta por clave):**
 
-    ```bash
-    # Obtiene un ítem de la tabla "MiTabla" usando la clave primaria id=1.
-    aws dynamodb get-item --table-name MiTabla --key '{"id": {"N": "1"}}'
-    ```
+        ```bash
+        # Obtiene un ítem de la tabla "MiTabla" usando la clave primaria id=1.
+        aws dynamodb get-item --table-name MiTabla --key '{"id": {"N": "1"}}'
+        ```
 
 - **Query (Consulta por clave de partición):**
 
-    ```bash
-    # Consulta ítems en la tabla "MiTabla" donde el nombre es "Producto A".
-    aws dynamodb query --table-name MiTabla --key-condition-expression "nombre = :nombre" --expression-attribute-values '{":nombre": {"S": "Producto A"}}'
-    ```
+        ```bash
+        # Consulta ítems en la tabla "MiTabla" donde el nombre es "Producto A".
+        aws dynamodb query --table-name MiTabla --key-condition-expression "nombre = :nombre" --expression-attribute-values '{":nombre": {"S": "Producto A"}}'
+        ```
 
 - **Scan (Consulta completa de la tabla):**
 
-    ```bash
-    # Escanea todos los ítems de la tabla "MiTabla".
-    aws dynamodb scan --table-name MiTabla
-    ```
+        ```bash
+        # Escanea todos los ítems de la tabla "MiTabla".
+        aws dynamodb scan --table-name MiTabla
+        ```
 
 ---
 
-## **Día 5 – JUnit + Queries + Repaso general**
+## **TEMA 5 – JUnit + Queries + Repaso general**
 
 ### **JUnit**
 
@@ -623,9 +679,9 @@ Un **desarrollador full stack** es capaz de trabajar en **frontend**, **backend*
 ```java
 // Clase Calculadora con un método para sumar dos números.
 public class Calculadora {
-        public int sumar(int a, int b) {
-                return a + b;
-        }
+                public int sumar(int a, int b) {
+                                return a + b;
+                }
 }
 
 // Test unitario para la clase Calculadora usando JUnit.
@@ -633,12 +689,12 @@ import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class CalculadoraTest {
-        @Test
-        public void testSumar() {
-                Calculadora calculadora = new Calculadora();
-                int resultado = calculadora.sumar(2, 3);
-                assertEquals(5, resultado); // Verifica que la suma es correcta.
-        }
+                @Test
+                public void testSumar() {
+                                Calculadora calculadora = new Calculadora();
+                                int resultado = calculadora.sumar(2, 3);
+                                assertEquals(5, resultado); // Verifica que la suma es correcta.
+                }
 }
 ```
 
@@ -676,30 +732,30 @@ List<Producto> productos = query.getResultList();
 
 - **Filtro WHERE:**
 
-    ```java
-    // Consulta JPQL para buscar productos cuyo nombre contiene "Televisor".
-    Query query = em.createQuery("SELECT p FROM Producto p WHERE p.nombre LIKE :nombrePatron");
-    query.setParameter("nombrePatron", "%Televisor%");
-    List<Producto> productos = query.getResultList();
-    ```
+        ```java
+        // Consulta JPQL para buscar productos cuyo nombre contiene "Televisor".
+        Query query = em.createQuery("SELECT p FROM Producto p WHERE p.nombre LIKE :nombrePatron");
+        query.setParameter("nombrePatron", "%Televisor%");
+        List<Producto> productos = query.getResultList();
+        ```
 
 - **JOIN:**
 
-    ```java
-    // Consulta JPQL para obtener libros de un autor específico.
-    Query query = em.createQuery("SELECT l FROM Libro l JOIN l.autor a WHERE a.nombre = :nombreAutor");
-    query.setParameter("nombreAutor", "Gabriel García Márquez");
-    List<Libro> libros = query.getResultList();
-    ```
+        ```java
+        // Consulta JPQL para obtener libros de un autor específico.
+        Query query = em.createQuery("SELECT l FROM Libro l JOIN l.autor a WHERE a.nombre = :nombreAutor");
+        query.setParameter("nombreAutor", "Gabriel García Márquez");
+        List<Libro> libros = query.getResultList();
+        ```
 
 - **Agregación:**
 
-    ```java
-    // Consulta JPQL para contar productos cuyo precio es mayor a un valor.
-    Query query = em.createQuery("SELECT COUNT(p) FROM Producto p WHERE p.precio > :precioMinimo");
-    query.setParameter("precioMinimo", 50.0);
-    Long cantidad = (Long) query.getSingleResult();
-    ```
+        ```java
+        // Consulta JPQL para contar productos cuyo precio es mayor a un valor.
+        Query query = em.createQuery("SELECT COUNT(p) FROM Producto p WHERE p.precio > :precioMinimo");
+        query.setParameter("precioMinimo", 50.0);
+        Long cantidad = (Long) query.getSingleResult();
+        ```
 
 ---
 
@@ -710,14 +766,14 @@ List<Producto> productos = query.getResultList();
 ```java
 // Clase CadenaUtil con métodos para invertir cadenas y verificar palíndromos.
 public class CadenaUtil {
-        public String invertirCadena(String cadena) {
-                return new StringBuilder(cadena).reverse().toString();
-        }
+                public String invertirCadena(String cadena) {
+                                return new StringBuilder(cadena).reverse().toString();
+                }
 
-        public boolean esPalindromo(String cadena) {
-                String invertida = invertirCadena(cadena).toLowerCase();
-                return cadena.toLowerCase().equals(invertida);
-        }
+                public boolean esPalindromo(String cadena) {
+                                String invertida = invertirCadena(cadena).toLowerCase();
+                                return cadena.toLowerCase().equals(invertida);
+                }
 }
 ```
 
@@ -727,34 +783,28 @@ public class CadenaUtil {
 // Entidad Cliente: representa un cliente que puede tener muchos pedidos.
 @Entity
 public class Cliente {
-        @Id
-        @GeneratedValue(strategy = GenerationType.IDENTITY)
-        private Long id;
-        private String nombre;
-        @OneToMany(mappedBy = "cliente") // Un cliente puede tener muchos pedidos.
-        private List<Pedido> pedidos;
-        //... getters y setters
+                @Id
+                @GeneratedValue(strategy = GenerationType.IDENTITY)
+                private Long id;
+                private String nombre;
+                @OneToMany(mappedBy = "cliente") // Un cliente puede tener muchos pedidos.
+                private List<Pedido> pedidos;
+                //... getters y setters
 }
 
 // Entidad Pedido: representa un pedido que pertenece a un cliente.
 @Entity
 public class Pedido {
-        @Id
-        @GeneratedValue(strategy = GenerationType.IDENTITY)
-        private Long id;
-        private Date fecha;
-        private double total;
-        @ManyToOne // Muchos pedidos pueden pertenecer a un cliente.
-        @JoinColumn(name = "cliente_id")
-        private Cliente cliente;
-        //... getters y setters
+                @Id
+                @GeneratedValue(strategy = GenerationType.IDENTITY)
+                private Long id;
+                private Date fecha;
+                private double total;
+                @ManyToOne // Muchos pedidos pueden pertenecer a un cliente.
+                @JoinColumn(name = "cliente_id")
+                private Cliente cliente;
+                //... getters y setters
 }
 ```
 
 ---
-
-## **Conclusión**
-
-Este currículo ha cubierto una **amplia gama de temas esenciales** para el desarrollo web moderno en un periodo de cinco días. Desde la **persistencia de datos con JPA**, incluyendo relaciones, repositorios y estrategias de carga, hasta la **creación de interfaces de usuario interactivas con React** y la gestión del estado con Hooks y Context. También se exploró la **navegación en React con React Router**, la realización de peticiones a APIs con Axios, los conceptos fundamentales del desarrollo **Full Stack**, una introducción a **AWS** y la base de datos **NoSQL DynamoDB**, y finalmente, las prácticas de prueba con **JUnit** y las consultas en **JPA**.
-
-> **Recomendación:** La práctica continua y la exploración más profunda de cada uno de estos temas consolidará el conocimiento adquirido y permitirá abordar proyectos de desarrollo más complejos.
