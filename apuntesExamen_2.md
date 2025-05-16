@@ -19,6 +19,8 @@
         - [useState](#usestate)
         - [useEffect](#useeffect)
         - [useContext](#usecontext)
+        - [useReducer](#usereducer)
+        - [useRef](#useref)
     - [Context API](#context-api)
         - [Ventajas de usar Context](#ventajas-de-usar-context)
 
@@ -142,7 +144,7 @@ Las **relaciones entre entidades** son un aspecto fundamental del modelado de da
 
 #### **Analogía para principiantes**
 
-> Piensa en una **caja de herramientas** y las herramientas que contiene. Una caja de herramientas puede contener muchas herramientas (`@OneToMany`). Y cada herramienta pertenece a una sola caja de herramientas (`@ManyToOne`).
+> Piensa en una caja de herramientas y las herramientas que contiene. Una caja de herramientas puede contener muchas herramientas (`@OneToMany`). Y cada herramienta pertenece a una sola caja de herramientas (`@ManyToOne`).
 
 ---
 
@@ -392,8 +394,158 @@ function ComponenteConsumidor() {
 }
 ```
 
----
+#### **useReducer**
 
+`useReducer` es un Hook que permite gestionar el estado complejo en componentes de React, siendo una alternativa a `useState`. Es especialmente útil cuando el siguiente estado depende del anterior o cuando se manejan múltiples sub-valores.
+
+Ejemplo básico de `useReducer`:
+
+```javascript
+import React, { useReducer } from 'react';
+
+// Definición del reductor (reducer)
+function contadorReducer(estado, accion) {
+        switch (accion.type) {
+                case 'incrementar':
+                        return { count: estado.count + 1 };
+                case 'decrementar':
+                        return { count: estado.count - 1 };
+                default:
+                        throw new Error();
+        }
+}
+useReducer
+El hook useReducer es una alternativa a useState para manejar estados más complejos en componentes funcionales de React. Es especialmente útil cuando el estado tiene múltiples subvalores o cuando las actualizaciones del estado dependen de acciones específicas.
+
+Explicación para principiantes
+Imagina que tienes una caja de herramientas con diferentes botones (acciones). Cada botón realiza una tarea específica, como agregar algo, eliminar algo o cambiar algo. useReducer es como un manual que dice qué debe hacer cada botón cuando lo presionas.
+
+En términos simples:
+
+Estado inicial: Es el contenido inicial de tu caja de herramientas.
+Acción: Es el botón que presionas para realizar un cambio.
+Reducer: Es el manual que explica cómo cambiar el contenido de la caja según el botón que presionaste.
+
+function Contador() {
+        // Uso de useReducer con el reductor definido arriba
+        const [estado, dispatch] = useReducer(contadorReducer, { count: 0 });
+
+        return (
+                <>
+                        <p>Contador: {estado.count}</p>
+                        <button onClick={() => dispatch({ type: 'incrementar' })}>+</button>
+                        <button onClick={() => dispatch({ type: 'decrementar' })}>-</button>
+                </>
+        );
+}
+```
+
+---
+useRef
+El hook useRef se utiliza para crear una referencia mutable que persiste durante el ciclo de vida completo de un componente. Es útil para acceder directamente a elementos del DOM o para almacenar valores que no necesitan causar una re-renderización del componente.
+
+Explicación para principiantes
+Imagina que tienes una caja donde puedes guardar algo (como un lápiz) y puedes acceder a él en cualquier momento sin que nadie más lo note. Esa caja es como useRef. Puedes guardar cosas ahí y usarlas sin que afecten lo que está pasando alrededor.
+
+En términos simples:
+
+Referencia mutable: Es un objeto que puedes modificar sin causar que el componente se vuelva a renderizar.
+Acceso al DOM: Puedes usar useRef para interactuar directamente con elementos HTML, como enfocar un campo de texto.
+
+Ejemplo básico: Acceso al DOM
+Explicación del ejemplo
+Acceso al DOM: La propiedad current de la referencia apunta al elemento del DOM (el input).
+import React, { useRef } from 'react';
+
+function EnfocarInput() {
+    const inputRef = useRef(null); // Crea una referencia mutable
+
+    const enfocar = () => {
+        inputRef.current.focus(); // Usa la referencia para enfocar el input
+    };
+
+    return (
+        <div>
+            <input ref={inputRef} type="text" placeholder="Escribe algo..." />
+            <button onClick={enfocar}>Enfocar</button>
+        </div>
+    );
+}
+
+export default EnfocarInput;
+Referencia mutable: useRef(null) crea una referencia que inicialmente es null.
+Acceso al DOM: La propiedad current de la referencia apunta al elemento del DOM (el input).
+Interacción: Al hacer clic en el botón, se llama a inputRef.current.focus(), que enfoca el campo de texto.
+Ejemplo avanzado: Contador sin re-renderización
+import React, { useRef, useState } from 'react';
+
+function ContadorSinRender() {
+    const contadorRef = useRef(0); // Crea una referencia mutable
+    const [render, setRender] = useState(false); // Estado para forzar render
+
+    const incrementar = () => {
+        contadorRef.current += 1; // Incrementa el valor de la referencia
+        console.log(`Contador actual: ${contadorRef.current}`);
+    };
+
+    const forzarRender = () => {
+        setRender(!render); // Cambia el estado para forzar un render
+    };
+
+    return (
+        <div>
+            <p>El contador actual es: {contadorRef.current}</p>
+            <button onClick={incrementar}>Incrementar (sin renderizar)</button>
+            <button onClick={forzarRender}>Forzar render</button>
+        </div>
+    );
+}
+
+export default ContadorSinRender;
+import React, { useRef, useState } from 'react';
+
+function Temporizador() {
+    const intervaloRef = useRef(null); // Referencia para almacenar el ID del intervalo
+    const [segundos, setSegundos] = useState(0);
+
+    const iniciar = () => {
+        if (!intervaloRef.current) {
+            intervaloRef.current = setInterval(() => {
+                setSegundos((prev) => prev + 1);
+            }, 1000);
+        }
+    };
+
+    const detener = () => {
+        clearInterval(intervaloRef.current); // Limpia el intervalo
+        intervaloRef.current = null; // Resetea la referencia
+    };
+
+    return (
+        <div>
+            <p>Segundos: {segundos}</p>
+            <button onClick={iniciar}>Iniciar</button>
+            <button onClick={detener}>Detener</button>
+        </div>
+    );
+}
+
+export default Temporizador;
+Explicación del ejemplo
+Referencia mutable: contadorRef almacena el valor del contador sin causar re-renderización.
+Estado independiente: El estado render se usa solo para forzar un render manual.
+Uso práctico: Puedes ver el valor actualizado del contador en la consola sin que el componente se vuelva a renderizar.
+Ejemplo con animaciones: Temporizador
+Explicación del ejemplo
+Referencia mutable: intervaloRef almacena el ID del intervalo para que pueda ser limpiado más tarde.
+Persistencia: La referencia persiste incluso si el componente se re-renderiza.
+Limpieza: Al detener el temporizador, se limpia el intervalo y se resetea la referencia.
+Ventajas de usar useRef
+Evita re-renderizaciones innecesarias: Los cambios en la referencia no causan que el componente se vuelva a renderizar.
+Acceso directo al DOM: Permite interactuar con elementos HTML sin usar document.querySelector.
+Persistencia de valores: Los valores almacenados en useRef persisten entre renderizaciones.
+Analogía para principiantes
+Piensa en useRef como un cajón donde puedes guardar cosas importantes (como un lápiz o un temporizador). Puedes abrir el cajón y usar lo que hay dentro sin que nadie más se dé cuenta o sin que cambie lo que está pasando en la habitación.
 ### **Context API**
 
 Permite **compartir valores** entre todos los componentes en un árbol, sin tener que pasarlos explícitamente a través de cada nivel.
