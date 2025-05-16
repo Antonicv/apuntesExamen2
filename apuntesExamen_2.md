@@ -539,51 +539,75 @@ axios.get('https://api.ejemplo.com/recurso-inexistente')
         });
 ```
 
+# Isomorfismo en Axios: Resumen
+
+**Axios** es una herramienta (librería) que se usa en programación para enviar y recibir información a través de internet. Por ejemplo, si una aplicación necesita obtener datos de una página web o enviar información a un servidor, Axios puede hacer ese trabajo.
+
+El término **isomorfismo** en Axios significa que esta herramienta funciona de la misma manera en dos lugares diferentes:
+1. En el navegador (como cuando usas Google Chrome o Firefox).
+2. En el servidor (la computadora que maneja la parte "invisible" de una aplicación).
+
+Esto es útil porque puedes escribir un solo bloque de código y usarlo en ambos lugares sin necesidad de cambiar nada.
+
 ---
 
-### **Práctica: App React con rutas y llamadas a API falsas**
+## Características clave del isomorfismo en Axios
+
+1. **Código compartido**:  
+   Puedes escribir una función (un conjunto de instrucciones) que use Axios para enviar o recibir información. Esa misma función funcionará tanto en el navegador como en el servidor.
+
+2. **Abstracción del entorno**:  
+   Axios detecta automáticamente dónde se está ejecutando tu código (en el navegador o en el servidor) y usa las herramientas adecuadas para cada caso.  
+   - En el navegador, usa algo llamado `XMLHttpRequest`.  
+   - En el servidor, usa herramientas llamadas `http` o `https`.
+
+3. **Soporte para SSR (Server-Side Rendering)**:  
+   En aplicaciones avanzadas como las creadas con **Next.js**, Axios permite obtener datos antes de que la página se muestre al usuario. Esto es útil para aplicaciones que necesitan cargar información rápidamente.
+
+4. **Consistencia en la API**:  
+   La forma en que usas Axios y los resultados que obtienes son los mismos, sin importar si el código se ejecuta en el navegador o en el servidor. Esto hace que sea más fácil de aprender y mantener.
+   
+
+---
+
+## Ejemplo de uso isomórfico
+
+Aquí tienes un ejemplo sencillo de cómo usar Axios para obtener información de una página web:
 
 ```javascript
-// Ejemplo de componente React que obtiene y muestra una lista de usuarios usando Axios y React Router.
-import React, { useState, useEffect } from 'react';
-import { BrowserRouter, Routes, Route, Link } from 'react-router-dom';
-import axios from 'axios';
+import axios from 'axios'; // Importamos Axios para usarlo
 
-function ListaDeUsuarios() {
-        const [usuarios, setUsuarios] = useState([]);
-        const [cargando, setCargando] = useState(true);
-        const [error, setError] = useState(null);
-
-        useEffect(() => {
-                // Realiza una petición GET a una API falsa para obtener usuarios.
-                axios.get('https://jsonplaceholder.typicode.com/users')
-                 .then(respuesta => {
-                                setUsuarios(respuesta.data);
-                                setCargando(false);
-                        })
-                 .catch(error => {
-                                setError(error);
-                                setCargando(false);
-                        });
-        }, []);
-
-        if (cargando) return <p>Cargando usuarios...</p>;
-        if (error) return <p>Error al cargar los usuarios.</p>;
-
-        return (
-                <div>
-                        <h2>Lista de Usuarios</h2>
-                        <ul>
-                                {usuarios.map(usuario => (
-                                        <li key={usuario.id}>{usuario.name} ({usuario.email})</li>
-                                ))}
-                        </ul>
-                </div>
-        );
+async function obtenerDatos(url) {
+  const respuesta = await axios.get(url); // Hacemos una solicitud para obtener datos
+  return respuesta.data; // Devolvemos los datos obtenidos
 }
 ```
-
 ---
+¿Qué hace este código?
+Importar Axios:
+La primera línea trae Axios para que podamos usarlo en nuestro programa.
+
+Crear una función:
+Creamos una función llamada obtenerDatos que recibe una dirección web (URL) como entrada.
+
+Hacer una solicitud:
+Usamos Axios para pedir información de esa dirección web.
+
+Devolver los datos:
+Una vez que Axios obtiene la información, la función la devuelve para que podamos usarla en otro lugar.
+
+¿Por qué es isomórfico?
+Este código funcionará igual si lo usas en:
+
+Un navegador (por ejemplo, en una página web).
+Un servidor (por ejemplo, para procesar datos antes de enviarlos al navegador).
+Resumen
+El isomorfismo en Axios te permite escribir código que funciona tanto en el navegador como en el servidor. Esto es útil porque:
+
+Ahorras tiempo al no tener que escribir dos versiones diferentes del mismo código.
+Es más fácil mantener y entender tu programa.
+Puedes crear aplicaciones que funcionan bien en cualquier entorno, como las que usan frameworks modernos como Next.js.
+Incluso si no tienes experiencia en programación, piensa en Axios como un "cartero" que lleva y trae información entre tu aplicación y otras partes de internet. ¡Y lo mejor es que este cartero trabaja igual de bien en cualquier lugar! ```
 
 ## **TEMA 4 – Full Stack + AWS + DynamoDB**
 
@@ -805,5 +829,3 @@ public class Pedido {
                 //... getters y setters
 }
 ```
-
----
