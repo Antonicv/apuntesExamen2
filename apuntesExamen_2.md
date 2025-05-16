@@ -2,7 +2,7 @@
 
 ## Índice
 
-- [Introducción: Panorama del Currículo Integral de Programación](#introducción-panorama-del-currículo-integral-de-programación)
+
 
 - [TEMA 1 – JPA (Java Persistence API)](#tema-1--jpa-java-persistence-api)
     - [Conceptos Core de JPA](#conceptos-core-de-jpa)
@@ -57,13 +57,7 @@
 
 
 
-## **Introducción: Panorama del Currículo Integral de Programación**
 
-Este currículo de **cinco días** ha sido diseñado para proporcionar una **base sólida** en tecnologías modernas de desarrollo web. A lo largo de esta semana intensiva, se explorarán **conceptos fundamentales** y **herramientas esenciales**, abarcando desde la **persistencia de datos** en el lado del servidor con **JPA** hasta la creación de **interfaces de usuario dinámicas** con **React**, pasando por la gestión de bases de datos **NoSQL** con **AWS DynamoDB** y las prácticas de prueba con **JUnit**.
-
-El enfoque pedagógico se centra en ofrecer **explicaciones detalladas**, **ejemplos prácticos** y **analogías accesibles** para facilitar la comprensión de los temas, incluso para aquellos que se inician en el mundo de la programación. Cada día se construye sobre los conocimientos adquiridos previamente, culminando en una **visión integral** del desarrollo de aplicaciones web completas.
-
----
 
 ## **TEMA 1 – JPA (Java Persistence API)**
 
